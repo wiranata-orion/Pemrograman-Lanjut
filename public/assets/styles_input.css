@@ -1,0 +1,134 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f8f8f8; 
+    color: #333; 
+    min-height: 100vh;
+    display: flex;
+    gap: 2rem;
+}
+
+
+.page-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 480px;
+    margin: 0 auto;
+    gap: 2rem;
+}
+
+
+.form-container {
+    background: #ffffff;
+    padding: 2rem 2.5rem;
+    border-radius: 15px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    width: 100%;
+    border: 2px solid #DA291C;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+    font-size: 1.8rem;
+    color: #DA291C;
+}
+
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: #B71C1C;
+    font-size: 0.95rem;
+}
+
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="date"],
+textarea,
+select {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-family: 'Poppins', sans-serif;
+    background-color: #fff;
+    color: #333;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    resize: vertical;
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: #999;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    outline: none;
+    border-color: #DA291C;
+    box-shadow: 0 0 0 3px rgba(218, 41, 28, 0.2);
+}
+
+button[type="submit"],
+.btn-primary {
+    background: linear-gradient(135deg, #DA291C, #B71C1C);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.2rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s;
+    box-shadow: 0 4px 10px rgba(218, 41, 28, 0.3);
+}
+
+button[type="submit"]:hover,
+.btn-primary:hover {
+    background: linear-gradient(135deg, #B71C1C, #9C1717);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(218, 41, 28, 0.4);
+}
+
+button[type="submit"]:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(218, 41, 28, 0.2);
+}
+
+
+@media (max-width: 480px) {
+    .form-container {
+        padding: 1.5rem 1.5rem;
+    }
+
+    .btn-back {
+        align-self: center;
+        width: 100%;
+        justify-content: center;
+        padding: 0.75rem 1rem;
+        font-size: 1rem;
+    }
+
+    .page-wrapper {
+        gap: 0.75rem;
+    }
+}
