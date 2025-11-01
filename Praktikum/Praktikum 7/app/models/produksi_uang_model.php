@@ -547,9 +547,9 @@ class Produksi_Uang_Model extends Database {
         $stmt->bind_param("ssi", $nama_bahan, $jenis, $stok);
         return $stmt->execute();
     }
-    public function addOperator($nama, $shift) {
-        $stmt = $this->conn->prepare("INSERT INTO operator (nama, shift) VALUES (?, ?)");
-        $stmt->bind_param("ss", $nama, $shift);
+    public function addOperator($nama, $nomor, $shift) {
+        $stmt = $this->conn->prepare("INSERT INTO operator (nama, nomor, shift) VALUES (?, ?, ?)");
+        $stmt->bind_param("sss", $nama, $nomor, $shift);
         return $stmt->execute();
     }
     public function addProduksi($tanggal, $jumlah_lembar, $mesin_id, $bahan_id, $operator_id) {
@@ -575,9 +575,9 @@ class Produksi_Uang_Model extends Database {
         return $stmt->execute();
     }
 
-    public function updateOperator($id, $nama, $shift) {
-        $stmt = $this->conn->prepare("UPDATE operator SET nama = ?, shift = ? WHERE id = ?");
-        $stmt->bind_param("ssi", $nama, $shift, $id);
+    public function updateOperator($id, $nama, $nomor, $shift) {
+        $stmt = $this->conn->prepare("UPDATE operator SET nama = ?, nomor = ?, shift = ? WHERE id = ?");
+        $stmt->bind_param("sssi", $nama, $nomor, $shift, $id);
         return $stmt->execute();
     }
     
@@ -586,60 +586,323 @@ class Produksi_Uang_Model extends Database {
         $stmt->bind_param("iiissi", $produksi_id, $jumlah, $tingkat_cacat, $status, $catatan , $id);
         return $stmt->execute();
     }
+    private function autoDeleteOldRecords($table) {
+        try {
+            $batas = date('Y-m-d H:i:s');
+            $sql = "DELETE FROM {$table} WHERE hapus = true AND deleted_at IS NOT NULL AND deleted_at < ?";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bind_param("s", $batas);
+            $stmt->execute();
+            return $stmt->affected_rows;
+        } catch (\Exception $e) {
+            return 0;
+        }
+    }
+
     public function deleteMesin($id) {
-        $stmt = $this->conn->prepare("UPDATE mesin SET hapus = true WHERE id = ?");
-        $stmt->bind_param("i", $id);
-        return $stmt->execute();
+        try {
+            $this->conn->begin_transaction();
+            
+            // Mark the current record for deletion
+            $stmt = $this->conn->prepare("UPDATE mesin SET hapus = true, deleted_at = DATE_ADD(NOW(), INTERVAL 30 DAY) WHERE id = ?");
+            $stmt->bind_param("i", $id);
+            $result = $stmt->execute();
+            
+            // Auto-delete old records
+            $deletedCount = $this->autoDeleteOldRecords('mesin');
+            
+            $this->conn->commit();
+            return [
+                'success' => true,
+                'deleted_old' => $deletedCount,
+                'message' => $deletedCount > 0 ? "Record marked for deletion and {$deletedCount} old record(s) were permanently deleted." : "Record marked for deletion."
+            ];
+        } catch (\Exception $e) {
+            $this->conn->rollback();
+            return [
+                'success' => false,
+                'message' => "Error: " . $e->getMessage()
+            ];
+        }
     }
+
     public function deleteBahanBaku($id) {
-        $stmt = $this->conn->prepare("UPDATE bahan_baku SET hapus = true WHERE id = ?");
-        $stmt->bind_param("i", $id);
-        return $stmt->execute();
+        try {
+            $this->conn->begin_transaction();
+            
+            $stmt = $this->conn->prepare("UPDATE bahan_baku SET hapus = true, deleted_at = DATE_ADD(NOW(), INTERVAL 30 DAY) WHERE id = ?");
+            $stmt->bind_param("i", $id);
+            $result = $stmt->execute();
+            
+            $deletedCount = $this->autoDeleteOldRecords('bahan_baku');
+            
+            $this->conn->commit();
+            return [
+                'success' => true,
+                'deleted_old' => $deletedCount,
+                'message' => $deletedCount > 0 ? "Record marked for deletion and {$deletedCount} old record(s) were permanently deleted." : "Record marked for deletion."
+            ];
+        } catch (\Exception $e) {
+            $this->conn->rollback();
+            return [
+                'success' => false,
+                'message' => "Error: " . $e->getMessage()
+            ];
+        }
     }
+
     public function deleteOperator($id) {
-        $stmt = $this->conn->prepare("UPDATE operator SET hapus = true WHERE id = ?");
-        $stmt->bind_param("i", $id);
-        return $stmt->execute();
+        try {
+            $this->conn->begin_transaction();
+            
+            $stmt = $this->conn->prepare("UPDATE operator SET hapus = true, deleted_at = DATE_ADD(NOW(), INTERVAL 30 DAY) WHERE id = ?");
+            $stmt->bind_param("i", $id);
+            $result = $stmt->execute();
+            
+            $deletedCount = $this->autoDeleteOldRecords('operator');
+            
+            $this->conn->commit();
+            return [
+                'success' => true,
+                'deleted_old' => $deletedCount,
+                'message' => $deletedCount > 0 ? "Record marked for deletion and {$deletedCount} old record(s) were permanently deleted." : "Record marked for deletion."
+            ];
+        } catch (\Exception $e) {
+            $this->conn->rollback();
+            return [
+                'success' => false,
+                'message' => "Error: " . $e->getMessage()
+            ];
+        }
     }
+
     public function deleteProduksi($id) {
-        $stmt = $this->conn->prepare("UPDATE produksi SET hapus = true WHERE id = ?");
-        $stmt->bind_param("i", $id);
-        return $stmt->execute();
+        try {
+            $this->conn->begin_transaction();
+            
+            $stmt = $this->conn->prepare("UPDATE produksi SET hapus = true, deleted_at = DATE_ADD(NOW(), INTERVAL 30 DAY) WHERE id = ?");
+            $stmt->bind_param("i", $id);
+            $result = $stmt->execute();
+            
+            $deletedCount = $this->autoDeleteOldRecords('produksi');
+            
+            $this->conn->commit();
+            return [
+                'success' => true,
+                'deleted_old' => $deletedCount,
+                'message' => $deletedCount > 0 ? "Record marked for deletion and {$deletedCount} old record(s) were permanently deleted." : "Record marked for deletion."
+            ];
+        } catch (\Exception $e) {
+            $this->conn->rollback();
+            return [
+                'success' => false,
+                'message' => "Error: " . $e->getMessage()
+            ];
+        }
     }
+
     public function deleteQualityCheck($id) {
-        $stmt = $this->conn->prepare("UPDATE quality_check SET hapus = true WHERE id = ?");
-        $stmt->bind_param("i", $id);
-        return $stmt->execute();
+        try {
+            $this->conn->begin_transaction();
+            
+            $stmt = $this->conn->prepare("UPDATE quality_check SET hapus = true, deleted_at = DATE_ADD(NOW(), INTERVAL 30 DAY) WHERE id = ?");
+            $stmt->bind_param("i", $id);
+            $result = $stmt->execute();
+            
+            $deletedCount = $this->autoDeleteOldRecords('quality_check');
+            
+            $this->conn->commit();
+            return [
+                'success' => true,
+                'deleted_old' => $deletedCount,
+                'message' => $deletedCount > 0 ? "Record marked for deletion and {$deletedCount} old record(s) were permanently deleted." : "Record marked for deletion."
+            ];
+        } catch (\Exception $e) {
+            $this->conn->rollback();
+            return [
+                'success' => false,
+                'message' => "Error: " . $e->getMessage()
+            ];
+        }
     }
 
     public function restoreMesin($id) {
-        $stmt = $this->conn->prepare("UPDATE mesin SET hapus = false WHERE id = ?");
+        $stmt = $this->conn->prepare("UPDATE mesin SET hapus = false, deleted_at = NULL WHERE id = ?");
         $stmt->bind_param("i", $id);
         return $stmt->execute();
     }
 
+
     public function restoreBahanBaku($id) {
-        $stmt = $this->conn->prepare("UPDATE bahan_baku SET hapus = false WHERE id = ?");
+        $stmt = $this->conn->prepare("UPDATE bahan_baku SET hapus = false, deleted_at = NULL WHERE id = ?");
         $stmt->bind_param("i", $id);
         return $stmt->execute();
     }
 
     public function restoreOperator($id) {
-        $stmt = $this->conn->prepare("UPDATE operator SET hapus = false WHERE id = ?");
+        $stmt = $this->conn->prepare("UPDATE operator SET hapus = false, deleted_at = NULL WHERE id = ?");
         $stmt->bind_param("i", $id);
         return $stmt->execute();
     }
 
     public function restoreProduksi($id) {
-        $stmt = $this->conn->prepare("UPDATE produksi SET hapus = false WHERE id = ?");
+        $stmt = $this->conn->prepare("UPDATE produksi SET hapus = false, deleted_at = NULL WHERE id = ?");
         $stmt->bind_param("i", $id);
         return $stmt->execute();
     }
 
     public function restoreQualityCheck($id) {
-        $stmt = $this->conn->prepare("UPDATE quality_check SET hapus = false WHERE id = ?");
+        $stmt = $this->conn->prepare("UPDATE quality_check SET hapus = false, deleted_at = NULL WHERE id = ?");
         $stmt->bind_param("i", $id);
         return $stmt->execute();
+    }
+
+    public function restoreBulk($table, $ids) {
+        if (empty($ids)) {
+            return [
+                'success' => false,
+                'message' => 'No items selected'
+            ];
+        }
+
+        try {
+            $ids = array_map('intval', $ids);
+            $placeholders = str_repeat('?,', count($ids) - 1) . '?';
+            
+            $sql = "UPDATE {$table} SET hapus = false, deleted_at = NULL WHERE id IN ($placeholders)";
+            $stmt = $this->conn->prepare($sql);
+            
+            $types = str_repeat('i', count($ids));
+            $stmt->bind_param($types, ...$ids);
+            
+            $stmt->execute();
+            $affected = $stmt->affected_rows;
+            
+            return [
+                'success' => true,
+                'count' => $affected,
+                'message' => "{$affected} item(s) restored successfully"
+            ];
+        } catch (\Exception $e) {
+            return [
+                'success' => false,
+                'message' => 'Error during restore: ' . $e->getMessage()
+            ];
+        }
+    }
+
+    public function softDeleteBulk($table, $ids) {
+        if (empty($ids)) {
+            return [
+                'success' => false,
+                'message' => 'No items selected'
+            ];
+        }
+
+        try {
+            $this->conn->begin_transaction();
+            
+            $ids = array_map('intval', $ids);
+            $placeholders = str_repeat('?,', count($ids) - 1) . '?';
+            
+            // Soft delete records with 30-day retention
+            $sql = "UPDATE {$table} SET hapus = true, deleted_at = DATE_ADD(NOW(), INTERVAL 30 DAY) WHERE id IN ($placeholders)";
+            $stmt = $this->conn->prepare($sql);
+            
+            $types = str_repeat('i', count($ids));
+            $stmt->bind_param($types, ...$ids);
+            
+            $stmt->execute();
+            $affected = $stmt->affected_rows;
+            
+            $this->conn->commit();
+            
+            return [
+                'success' => true,
+                'count' => $affected,
+                'message' => $affected > 0 ? 
+                    "{$affected} item(s) marked for deletion and will be automatically removed after 30 days." :
+                    "No items were affected."
+            ];
+        } catch (\Exception $e) {
+            $this->conn->rollback();
+            return [
+                'success' => false,
+                'message' => 'Error during soft delete: ' . $e->getMessage()
+            ];
+        }
+    }
+
+    public function forceDeleteBulk($table, $ids) {
+        if (empty($ids)) {
+            return [
+                'success' => false,
+                'message' => 'No items selected'
+            ];
+        }
+
+        try {
+            $this->conn->begin_transaction();
+            
+            $ids = array_map('intval', $ids);
+            $placeholders = str_repeat('?,', count($ids) - 1) . '?';
+            
+            // Permanently delete records
+            $sql = "DELETE FROM {$table} WHERE id IN ($placeholders)";
+            $stmt = $this->conn->prepare($sql);
+            
+            $types = str_repeat('i', count($ids));      
+            $stmt->bind_param($types, ...$ids);
+            
+            $stmt->execute();
+            $affected = $stmt->affected_rows;
+            
+            $this->conn->commit();
+            
+            return [
+                'success' => true,
+                'count' => $affected,
+                'message' => $affected > 0 ? 
+                    "{$affected} item(s) permanently deleted." :
+                    "No items were affected."
+            ];
+        } catch (\Exception $e) {
+            $this->conn->rollback();
+            return [
+                'success' => false,
+                'message' => 'Error during permanent delete: ' . $e->getMessage()
+            ];
+        }
+    }
+
+    public function autoDeleteOld($days = 30) {
+        try {
+            $totalDeleted = 0;
+            $batas = date('Y-m-d H:i:s', strtotime("-{$days} days"));
+            
+            // List of tables to clean up
+            $tables = ['mesin', 'bahan_baku', 'operator', 'produksi', 'quality_check'];
+            
+            foreach ($tables as $table) {
+                $sql = "DELETE FROM {$table} WHERE hapus = true AND deleted_at IS NOT NULL AND deleted_at < ?";
+                $stmt = $this->conn->prepare($sql);
+                $stmt->bind_param("s", $batas);
+                $stmt->execute();
+                $totalDeleted += $stmt->affected_rows;
+            }
+            
+            return [
+                'success' => true,
+                'count' => $totalDeleted,
+                'message' => "Successfully deleted {$totalDeleted} records older than {$days} days"
+            ];
+        } catch (\Exception $e) {
+            return [
+                'success' => false,
+                'count' => 0,
+                'message' => 'Error during auto delete: ' . $e->getMessage()
+            ];
+        }
     }
 }
 ?>

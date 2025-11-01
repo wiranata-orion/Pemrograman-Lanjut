@@ -21,6 +21,17 @@
         </a>
         <div class="form-container">
             <h2><i class="fas fa-gear"></i> Tambah Mesin</h2>
+            <?php if (!empty($errors)): ?>
+                <div class="alert alert-danger" style="background: #ffdddd; color: #a33; padding: 10px; border-radius: 8px; margin-bottom: 15px;">
+                    <ul style="margin: 0; padding-left: 20px;">
+                        <?php foreach ($errors as $field => $msgs): ?>
+                            <?php foreach ($msgs as $msg): ?>
+                                <li><?= htmlspecialchars($msg) ?></li>
+                            <?php endforeach; ?>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+            <?php endif; ?>
             <form method="POST" action="index.php?view=tambah_mesin">
                 <div class="form-group">
                     <label for="nama_mesin">Nama Mesin</label>
@@ -46,6 +57,17 @@
         </a>
         <div class="form-container">
             <h2><i class="fa-solid fa-boxes-stacked"></i> Tambah Bahan Baku</h2>
+            <?php if (!empty($errors)): ?>
+                <div class="alert alert-danger" style="background: #ffdddd; color: #a33; padding: 10px; border-radius: 8px; margin-bottom: 15px;">
+                    <ul style="margin: 0; padding-left: 20px;">
+                        <?php foreach ($errors as $field => $msgs): ?>
+                            <?php foreach ($msgs as $msg): ?>
+                                <li><?= htmlspecialchars($msg) ?></li>
+                            <?php endforeach; ?>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+            <?php endif; ?>
             <form method="POST" action="index.php?view=tambah_bahan_baku">
                 <div class="form-group">
                     <label for="nama_bahan">Nama Bahan</label>
@@ -71,10 +93,29 @@
         </a>
         <div class="form-container">    
             <h2><i class="fa-solid fa-users"></i> Tambah Operator</h2>
+            <?php if (!empty($errors)): ?>
+                <div class="alert alert-danger" style="background: #ffdddd; color: #a33; padding: 10px; border-radius: 8px; margin-bottom: 15px;">
+                    <ul style="margin: 0; padding-left: 20px;">
+                        <?php foreach ($errors as $field => $msgs): ?>
+                            <?php foreach ($msgs as $msg): ?>
+                                <li><?= htmlspecialchars($msg) ?></li>
+                            <?php endforeach; ?>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+            <?php endif; ?>
             <form method="POST" action="index.php?view=tambah_operator">
                 <div class="form-group">
                     <label for="nama">Nama</label>
                     <input type="text" id="nama" name="nama" placeholder="nama" required />
+                </div>
+                <div class="form-group">
+                    <label for="nomor">Nomor</label>
+                    <input type="text" id="nomor" name="nomor" placeholder="Nomor" required />  
+                </div>
+                <div class="form-group">
+                    <label for="nomor">Nomor Confirm</label>
+                    <input type="text" id="nomor" name="nomor" placeholder="Nomor" required />  
                 </div>
                 <div class="form-group">
                     <label for="shift">Shift</label>
@@ -97,6 +138,17 @@
         </a>
         <div class="form-container">
             <h2><i class="fa-solid fa-cogs"></i> Tambah Produksi</h2>
+            <?php if (!empty($errors)): ?>
+                <div class="alert alert-danger" style="background: #ffdddd; color: #a33; padding: 10px; border-radius: 8px; margin-bottom: 15px;">
+                    <ul style="margin: 0; padding-left: 20px;">
+                        <?php foreach ($errors as $field => $msgs): ?>
+                            <?php foreach ($msgs as $msg): ?>
+                                <li><?= htmlspecialchars($msg) ?></li>
+                            <?php endforeach; ?>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+            <?php endif; ?>
             <form method="POST" action="index.php?view=tambah_produksi">
                 <div class="form-group">
                     <label for="tanggal">Tanggal</label>
@@ -130,6 +182,17 @@
         </a>
         <div class="form-container">
             <h2><i class="fa-solid fa-circle-check"></i> Tambah Quality Check</h2>
+            <?php if (!empty($errors)): ?>
+                <div class="alert alert-danger" style="background: #ffdddd; color: #a33; padding: 10px; border-radius: 8px; margin-bottom: 15px;">
+                    <ul style="margin: 0; padding-left: 20px;">
+                        <?php foreach ($errors as $field => $msgs): ?>
+                            <?php foreach ($msgs as $msg): ?>
+                                <li><?= htmlspecialchars($msg) ?></li>
+                            <?php endforeach; ?>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+            <?php endif; ?>
             <form method="POST" action="index.php?view=tambah_quality_check">
                 <div class="form-group">
                     <label for="produksi_id">Produksi ID</label>

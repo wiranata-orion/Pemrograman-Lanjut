@@ -81,6 +81,14 @@
                     <input type="text" name="nama" value="<?= $detailOperator['nama']; ?>" />
                 </div>
                 <div class="form-group">
+                    <label for="nomor">Nomor</label>
+                    <input type="text" id="nomor" name="nomor" placeholder="Nomor" required />  
+                </div>
+                <div class="form-group">
+                    <label for="nomor">Nomor Confirm</label>
+                    <input type="text" id="nomor" name="nomor" placeholder="Nomor" required />  
+                </div>
+                <div class="form-group">
                     <label for="shift">Shift</label>
                     <select name="shift" id="shift">
                         <option value="">Pilih Shift</option>
