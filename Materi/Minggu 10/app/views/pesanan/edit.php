@@ -8,10 +8,10 @@
     <h2>Edit Pesanan Klien</h2>
     <form method="POST">
         <label>Nama Klien:</label><br>
-        <input type="text" name="nama_klien" value="<?= htmlspecialchars($pesanan['nama_klien']) ?>" required><br><br>
+        <input type="text" name="nama_klien" value="<?= $pesanan['nama_klien'] ?>" required><br><br>
 
         <label>Email:</label><br>
-        <input type="email" name="email" value="<?= htmlspecialchars($pesanan['email']) ?>" required><br><br>
+        <input type="email" name="email" value="<?= $pesanan['email'] ?>" required><br><br>
 
         <label>Jenis Jasa Hukum:</label><br>
         <select name="jenis_jasa" required>
@@ -21,7 +21,7 @@
         </select><br>
 
         <label>Deskripsi:</label><br>
-        <textarea name="deskripsi" rows="5" cols="40"><?= htmlspecialchars($pesanan['deskripsi']) ?></textarea><br><br>
+        <textarea name="deskripsi" rows="5" cols="40"><?= $pesanan['deskripsi'] ?></textarea><br><br>
 
         <button type="submit">Simpan Perubahan</button>
         <a href="index.php">Batal</a>

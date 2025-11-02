@@ -22,9 +22,9 @@
         <?php foreach ($pesanan as $p): ?>
         <tr>
             <td><?= $p['id'] ?></td>
-            <td><?= htmlspecialchars($p['nama_klien']) ?></td>
-            <td><?= htmlspecialchars($p['email']) ?></td>
-            <td><?= htmlspecialchars($p['jenis_jasa']) ?></td>
+            <td><?= $p['nama_klien'] ?></td>
+            <td><?= $p['email'] ?></td>
+            <td><?= $p['jenis_jasa'] ?></td>
             <td><?= $p['tanggal_pesan'] ?></td>
             <td>
                 <a href="?action=show&id=<?= $p['id'] ?>">Lihat</a> |
