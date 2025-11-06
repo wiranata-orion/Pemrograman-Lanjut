@@ -9,7 +9,10 @@ class SuperAdminController {
     }
 
     public function index() {
-        require_once  '../app/views/superadmin/home.php';
+        $username = $_SESSION['username'];
+        $row = $this->SuperAdmin->GetUserData($username);
+
+        require_once '../app/views/superadmin/home.php';
     }
 }
 ?>
