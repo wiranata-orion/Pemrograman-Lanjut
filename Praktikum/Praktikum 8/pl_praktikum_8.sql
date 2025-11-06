@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 06 Nov 2025 pada 10.36
+-- Waktu pembuatan: 06 Nov 2025 pada 12.17
 -- Versi server: 10.4.32-MariaDB
 -- Versi PHP: 8.2.12
 
@@ -38,7 +38,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`username`, `password`, `kategori`) VALUES
-('wiranata', '1234', 0),
+('Wiranata', '1234', 0),
 ('Moses', '1234', 1),
 ('Jovanka', '1234', 2);
 COMMIT;
