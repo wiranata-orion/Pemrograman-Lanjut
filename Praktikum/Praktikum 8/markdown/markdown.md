@@ -137,14 +137,14 @@ if ($user) {
 
 ### Akun yang ada di dalam SQL
 
-- Super Admin
-Username : Wiranata
+- Super Admin\
+Username : Wiranata\
 Password : 1234
 
-- Operator
-Username : Moses
+- Operator\
+Username : Moses\
 Password : 1234
 
-- Pegawai
-Username : Jovanka
+- Pegawai\
+Username : Jovanka\
 Password : 1234
