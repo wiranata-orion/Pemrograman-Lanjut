@@ -42,7 +42,7 @@ class LoginController {
                 exit;
             } elseif ($KategoriUser == 2) {
                 $_SESSION['role'] = 'pegawai';
-                header('Location: index.php]');
+                header('Location: index.php ');
                 exit;
             }
         } else {
