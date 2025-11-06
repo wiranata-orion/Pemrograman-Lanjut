@@ -20,7 +20,6 @@ class Login extends Database {
         $result = $stmt->get_result();
         $row = $result->fetch_assoc();
 
-        // kalau tidak ada hasil, return null
         return $row ?: null;
     }
 }
