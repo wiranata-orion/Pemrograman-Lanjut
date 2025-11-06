@@ -8,7 +8,10 @@ class PegawaiController {
         $this->Pegawai = new Pegawai();
     }
     public function index() {
-        require_once  '../app/views/pegawai/home.php';
+        $username = $_SESSION['username'];
+        $row = $this->Pegawai->GetUserData($username);
+
+        require_once '../app/views/pegawai/home.php';
     }
 }
 ?>
