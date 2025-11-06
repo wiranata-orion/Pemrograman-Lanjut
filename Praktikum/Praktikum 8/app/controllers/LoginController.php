@@ -24,20 +24,21 @@ class LoginController {
         $user = $this->LoginModel->CheckUser($username, $password);
 
         if ($user) {
-            $kategori = $this->LoginModel->CheckKategoriUser($username);
-            $KategoriUser = $kategori['kategori'];
+            $row = $this->LoginModel->CheckKategoriUser($username);
+            $Role = $row['kategori'];
 
             $_SESSION['username'] = $username;
 
-            if ($KategoriUser == 0) {
+            if ($Role == 0) {
                 $_SESSION['role'] = 'superadmin';
+                
                 header('Location: index.php');
                 exit;
-            } elseif ($KategoriUser == 1) {
+            } elseif ($Role == 1) {
                 $_SESSION['role'] = 'operator';
                 header('Location: index.php');
                 exit;
-            } elseif ($KategoriUser == 2) {
+            } elseif ($Role == 2) {
                 $_SESSION['role'] = 'pegawai';
                 header('Location: index.php ');
                 exit;
