@@ -6,7 +6,7 @@ class Database
     private $host = 'localhost';
     private $username = 'root';
     private $password = '';
-    private $database = 'pl_praktikum_8';
+    private $database = 'pl_praktikum_9';
 
     public function __construct()
     {
