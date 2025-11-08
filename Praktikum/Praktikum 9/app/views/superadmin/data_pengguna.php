@@ -23,15 +23,17 @@
                         <td><?= $no++; ?></td>
                         <td><?= htmlspecialchars($user['username']) ?></td>
                         <td>
-                            <?php if ($user['kategori'] == 1): ?>
+                            <?php if ($user['kategori'] == 0): ?>
+                                <a>Super Admin</a>
+                            <?php elseif ($user['kategori'] == 1): ?>
                                 <a>Operator</a>
                             <?php elseif ($user['kategori'] == 2): ?>
                                 <a>Pegawai</a>
                             <?php endif; ?>
                         </td>
                         <td>
-                            <a href="">Edit</a>
-                            <a href="">Hapus</a>
+                            <a href="index.php?action=edit&username=<?= urlencode($user['username'])?>">Edit</a> |
+                            <a href="index.php?action=hapus&username=<?= urlencode($user['username'])?>">Hapus</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>
@@ -39,7 +41,8 @@
                 <tr><td colspan="5">Belum ada data.</td></tr>
             <?php endif; ?>
         </table>
-        <a href="index.php?action=add_form">Tambah Akun</a>
+        <br><br>
+        <a href="index.php?action=tambah">Tambah Akun</a>
     </center>
 </body>
 </html>
